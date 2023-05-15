@@ -99,6 +99,10 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
   /// drawable is deleted.
   bool cancelControlsAnimation = false;
 
+  /// 选择状态计时消失
+  Timer? _delayTimer;
+  int _delayCount = 0;
+
   @override
   void initState() {
     super.initState();
@@ -121,6 +125,25 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
           .transformationController
           .addListener(onTransformUpdated);
     });
+
+    /// 计时器放到下一帧
+    WidgetsBinding.instance.addPostFrameCallback(_addWidgetPostFrame);
+  }
+
+  void _addWidgetPostFrame(timeStamp) {
+    _delayTimer =
+        Timer.periodic(const Duration(seconds: 1), _delayTimerRunnable);
+  }
+
+  void _delayTimerRunnable(timer) {
+    if (_delayCount < 3) {
+      _delayCount++;
+    } else {
+      _delayCount = 0;
+      if (controller != null && controller?.selectedObjectDrawable != null) {
+        controller?.deselectObjectDrawable();
+      }
+    }
   }
 
   @override
@@ -132,6 +155,8 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
   @override
   void dispose() {
     // Cancel subscription to events from painter controller
+    _delayTimer?.cancel();
+    _delayTimer = null;
     controllerEventSubscription?.cancel();
     controller?.transformationController.removeListener(onTransformUpdated);
     super.dispose();
@@ -197,6 +222,7 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
                                               (controlsSize / 2),
                                           child: Builder(
                                             builder: (context) {
+                                              /// TODO: 这边主要走网页的，如果后续支持Html要考虑一下这边的虚线视线
                                               if (usingHtmlRenderer) {
                                                 return Container(
                                                   decoration: BoxDecoration(
@@ -216,20 +242,39 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
                                                 );
                                               }
                                               return Container(
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.white,
-                                                        width:
-                                                            selectedBorderWidth),
-                                                    boxShadow: [
-                                                      BorderBoxShadow(
-                                                        color: Colors.black,
-                                                        blurRadius:
-                                                            selectedBlurRadius,
-                                                      )
-                                                    ]),
+                                                decoration: const BoxDecoration(
+                                                  border: DashBorder(),
+                                                ),
                                               );
                                             },
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: GestureDetector(
+                                            behavior:
+                                                HitTestBehavior.translucent,
+                                            onTap: () {
+                                              if (controller == null) {
+                                                return;
+                                              }
+                                              final selectedDrawable =
+                                                  controller!
+                                                      .selectedObjectDrawable;
+                                              if (selectedDrawable != null) {
+                                                controller!.removeDrawable(
+                                                    selectedDrawable);
+                                              }
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Image.asset(
+                                                'images/ic_close.png',
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         if (settings
@@ -675,9 +720,8 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
       ..rotateZ(initialRotation)
       ..translate(details.localFocalPoint.dx, details.localFocalPoint.dy)
       ..rotateZ(-initialRotation);
-    var position =
-        initialPosition + Offset(rotateOffset[12], rotateOffset[13]);
-            final drawableSize = initialDrawable.getSize();
+    var position = initialPosition + Offset(rotateOffset[12], rotateOffset[13]);
+    final drawableSize = initialDrawable.getSize();
     final size = this.center + this.center;
     position = Offset(
         min(size.dx - drawableSize.width / 2,
@@ -854,6 +898,7 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
   /// Replaces a drawable with a new one.
   void updateDrawable(ObjectDrawable oldDrawable, ObjectDrawable newDrawable,
       {bool newAction = false}) {
+    _delayCount = 0;
     setState(() {
       PainterController.of(context)
           .replaceDrawable(oldDrawable, newDrawable, newAction: newAction);
