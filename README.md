@@ -1,92 +1,246 @@
-# flutter_painter
+# Flutter Painter 🎨🖌️
 
-图片编辑
+[![pub package](https://img.shields.io/pub/v/flutter_painter?label=flutter_painter&color=blue)](https://pub.dev/packages/flutter_painter) <a href="https://www.buymeacoffee.com/omarhurani" target="_blank"><img src="https://i.imgur.com/OUmVzk7.png" alt="Buy Me A Pizza" height=22px/ > </a>
 
-## Getting started
+A pure-Flutter package for painting. 
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Summary
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Flutter Painter provides you with a widget that can be used to draw on it. Right now, it supports:
+- **Free-style drawing**: Scribble anything you want with any width and color.
+- **Objects** that you can move, scale and rotate in an easy and familiar way, such as:
+  - **Text** with any `TextStyle`.
+  - **Shapes** such as lines, arrows, ovals and rectangles with any `Paint`.
+  - **Images** that can be flipped.
+- **Free-style eraser** to erase any part of a drawing or object you don't want on the painter.[*](#erasing)
 
-## Add your files
+These are called **drawables**.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+You can use a color or an image for the background of your drawing, and export your painting as an image.
 
-```
-cd existing_repo
-git remote add origin http://git.eatdesk.net/flutter_plugin/flutter_painter.git
-git branch -M main
-git push -uf origin main
-```
 
-## Integrate with your tools
+## Example
 
-- [ ] [Set up project integrations](http://git.eatdesk.net/flutter_plugin/flutter_painter/-/settings/integrations)
+You can check out the example tab for an example on how to use the package.
 
-## Collaborate with your team
+The example is hosted [here](https://flutter-painter.web.app) if you want to try it out yourself!
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+A video recording showing the example running:
 
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+<img src="https://github.com/omarhurani/flutter_painter/blob/1.0.1/example/flutter_painter_example.gif?raw=true" alt="Flutter Painter Video Demo" height=800px/>
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+First, you'll need a `PainterController` object. The `PainterController` controls the different drawables, the background you're drawing on and provides the `FlutterPainter` widget with the settings it needs. Then, in your UI, use the `FlutterPainter` widget with the controller assigned to it.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+```dart
+class ExampleWidget extends StatefulWidget {
+  const ExampleWidget({Key? key}) : super(key: key);
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+  @override
+  _ExampleWidgetState createState() => _ExampleWidgetState();
+}
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+class _ExampleWidgetState extends State<ExampleWidget> {
+  PainterController controller = PainterController();
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      height: 300,
+      child: FlutterPainter(
+        controller: controller,        
+      ),
+    );
+  }
+}
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+```
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+You can also use the `FlutterPainter.builder` constructor, which uses a builder method that automatically updates whenever a change happens in the controller, without using `setState`, callbacks, or listeners. However, this will perform worse than a `StatefulWidget` since it will rebuild more often, so it is recommended to use if the widget tree that depends on `PainterController` is simple. 
 
-## License
-For open source projects, say how it is licensed.
+```dart
+class ExampleWidget extends StatefulWidget {
+  const ExampleWidget({Key? key}) : super(key: key);
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+  @override
+  _ExampleWidgetState createState() => _ExampleWidgetState();
+}
+
+class _ExampleWidgetState extends State<ExampleWidget> {
+  PainterController controller = PainterController();
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterPainter.builder(
+      controller: controller,
+      builder: (context, painter){
+        return SizedBox(
+          width: 300,
+          height: 300,
+          child: painter
+        );
+      }
+    ); 
+  }
+}
+```
+
+> **NOTE:** `FlutterPainter` does not define its own constraints on its size, so it is advised to use a widget that can provide its child with size constraints, such as `SizedBox` or `AspectRatio` ([more on constraints here](https://flutter.dev/docs/development/ui/layout/constraints)).
+
+> **NOTE:** If mutiple parts of your UI depend on the `PainterController`, you can use a [`ValueListeneableBuilder`](https://api.flutter.dev/flutter/widgets/ValueListenableBuilder-class.html) with the `valueListenable` being your controller, which will re-build automatically whenever the controller updates. This is the approach used in the example project.
+
+
+### Callbacks
+
+`FlutterPainter` has some helpful callbacks that are called when internal changes happen in the widget itself.
+- `onDrawableCreated`: Called when a drawable is created from `FlutterPainter`. Passes the drawable as an arugment.
+- `onDrawableDeleted`: Called when a drawable is deleted from `FlutterPainter`. Passes the drawable as an arugment.
+- `onSelectedObjectDrawableChanged`: Called when the selected object drawable changes. This can be useful if you want to display some UI to edit the object's properties. Passes the selected object drawable as an argument.
+  - If the drawable is updated (moved, for example), the passed drawable will become invalid. Make sure to use [`PainterController.selectedObjectDrawable`](#selected-object-drawable) to get the up-to-date value of the selected drawable.
+- `onPainterSettingsChanged`: Called when the settings of `PainterController` are changed from `FlutterPainter` itself. Passes the new settings as an argument.
+
+
+## `PainterController`
+
+The `PainterController` is the heart of the operation of Flutter Painter. It controls the settings for `FlutterPainter`, its background, and all of its drawables, and the selected object drawable.
+
+All setters on `PainterController` directly notify your `FlutterPainter` to respond and repaint. If you're using `FlutterPainter.builder`, the builder is automatically called to build the widget tree. If not, make sure to use `setState` and listen to the callbacks 
+
+> **NOTE:** If you are using multiple painters, make sure that each `FlutterPainter` widget has its own `PainterController`, **do not** use the same controller for multiple painters.
+
+### Settings
+
+There are currently three types of settings:
+- `freeStyleSettings`: They control the parameters used in drawing scribbles, such as the width and color. It also has a field to enable/disable scribbles, to prevent the user from drawing on the `FlutterPainter`.
+- `textSettings`: They mainly control the `TextStyle` of the text being drawn. It also has a focus node field ([more on focus nodes here](https://flutter.dev/docs/cookbook/forms/focus)) to allow you to detect when the user starts and stops editing text.
+- `objectSettings`: These settings control objects that can be moved, scaled and rotated. Texts, shapes and images are all considered objects. It controls layout assist, which allows to center objects and rotate them at a right angle, and settings regarding the object controls for scaling, rotating and resizing.
+- `shapeSettings`: These control the paint and shape factory used (Shape Factory is used to create shapes), and whether the shape is drawn once or continiously.
+- `scaleSettings`: These settings control the scaling on the painter (zooming in/out). By default, scaling is disabled.
+
+You can provide initial settings for the things you want to draw through the settings parameter in the constructor of the `PainterController`.
+
+Each setting and sub-setting has extension setters and getters which you can use to read and modify the value of that setting.[*](#extensions)
+
+For example, this is how you would modify the stroke width of free-style drawings:
+
+```dart
+void setStrokeWidth(double value){
+  controller.freeStyleStrokeWidth = value;
+}
+```
+
+> **NOTE:** If you're not using the extensions library, note that all of the settings objects are immutable and cannot be modified, so in order to change some settings, you'll have to create a copy of your current settings and apply the changes you need (this is similar to how you would copy [`ThemeData`](https://api.flutter.dev/flutter/material/ThemeData-class.html)).
+
+### Background
+
+
+You can also provide a background for the `FlutterPainter` widget from the controller. You can either use a color or an image as a background.
+
+In order to use a color, you can simply call the `backgroundDrawable` extension getter on any color.[*](#extensions)
+```dart
+void setBackground(){
+  // Sets the background to the color black
+  controller.background = Colors.black.backgroundDrawable;
+}
+```
+
+In order to use an image, you will need an [`Image`](https://api.flutter.dev/flutter/dart-ui/Image-class.html) object from the dart library `dart:ui`. Since Flutter has an [`Image`](https://api.flutter.dev/flutter/widgets/Image-class.html) widget from the Material package, we'll refer to the image type we need as [`ui.Image`](https://api.flutter.dev/flutter/dart-ui/Image-class.html).
+```dart
+import 'dart:ui' as ui;
+ui.Image? myImage;
+```
+
+In order to get the `ui.Image` object from usual image sources (file, asset, network), you can use an [`ImageProvider`](https://api.flutter.dev/flutter/painting/ImageProvider-class.html) with the `image` extension getter (Examples of `ImageProvider`: [`FileImage`](https://api.flutter.dev/flutter/painting/FileImage-class.html), [`MemoryImage`](https://api.flutter.dev/flutter/painting/MemoryImage-class.html), [`NetworkImage`](https://api.flutter.dev/flutter/painting/NetworkImage-class.html)). This getter returns `Future<ui.Image>`.[*](#extensions)
+
+Then, you can use the `backgroundDrawable` extension getter on the `ui.Image`.[*](#extensions)
+```dart
+void setBackground() async {
+  // Obtains an image from network and creates a [ui.Image] object
+  final ui.Image myImage = await NetworkImage('https://picsum.photos/960/720').image;
+  // Sets the background to the image
+  controller.background = myImage.backgroundDrawable;
+}
+```
+
+The background can also be assigned from the constructor of `PainterController` directly.
+
+### Drawables
+
+All the drawables drawn on `FlutterPainter` are stored and controller by the `PainterController`. On most use cases, you won't need to interact with the drawables directly. However, you may add, insert, replace or remove drawables from the code (without the user actually drawing them).
+
+You can assign an initial list of `drawables` from the `PainterController` constructor to initialize the controller with them. You can also modify them from the controller, **but be careful**, use the methods from the `PainterController` itself and don't modify the `drawables` list directly.
+
+**DO:**
+```dart
+void addMyDrawables(List<Drawable> drawables){
+  controller.addDrawables(drawables);
+}
+```
+
+
+**DON'T:**
+```dart
+void addMyDrawables(List<Drawable> drawables){
+  controller.drawables.addAll(drawables);
+}
+```
+
+### Selected Object Drawable
+`PainterController` also provides the currently-selected `ObjectDrawable` from the getter field `PainterController.selectedObjectDrawable`. This value stays up-to-date for any changes from the UI (the user selecting a new object drawable, for example). You can also programatically select and de-select an object drawable, granted it is in the list of drawables of the controller.
+
+```dart
+void selectObjectDrawable(ObjectDrawable drawable){
+  controller.selectObjectDrawable(drawable);
+}
+
+void deselectObjectDrawable(){
+  controller.deselectObjectDrawable();
+}
+```
+
+The selected object drawable will also be automatically update if it is replaced or removed from the controller.
+
+
+### Rendering Image
+
+From the `PainterController`, you can render the contents of `FlutterPainter` as a PNG-encoded `ui.Image` object. In order to do that, you need to provide the size of the output image. All the drawings will be scaled according to that size.
+
+From the `ui.Image` object, you can convert it into a raw bytes list (`Uint8List`) in order to display it with `Image.memory` or save it as a file.
+
+```dart
+Uint8List? renderImage(Size size) async {
+  final ui.Image renderedImage = await controller.renderImage(size);
+  final Uint8List? byteData = await renderedImage.pngBytes;
+  return byteData;
+}
+```
+
+## Notes
+
+### Erasing
+
+Flutter Painter supports free-style erasing of drawables. However, whenever you use the erase mode, all object drawables will be locked in place and cannot be modified. This is done because erasing is just another layer, and if objects stayed movable, you'd be able to move from under and around erased areas of the painting, which doesn't make sense. If you un-do the action of using the erase mode, the objects will be unlocked again and you'll be able to move them.
+
+### Extensions
+Flutter Painter consists of 3 libraries:
+
+* `flutter_painter_pure`, which contains all the APIs of Flutter Painter except for extensions on Flutter and Flutter Painter itself.
+* `flutter_painter_extensions`, which contains all the extensions defined and used by Flutter Painter.
+* `flutter_painter` which includes both previously mentioned libraries.
+
+This is done so that people who don't want to use the extensions (conflicts, too many getters/setters, etc...) can use the pure library, and for people who only need the extensions to be able to import them alone.
+
+If you're trying to use the extensions and they're showing as undefined, make sure you're importing the correct library.
+
+### Flutter Web
+The `html` renderer for Flutter Web is not supported, and using it will cause unexpected behavior and errors (also includes the `auto` renderer which chooses the renderer depending on the device). If you're using it for Flutter Web, make sure to use `--web-renderer canvaskit` as an argument for your `run`/`build` commands. If you need to use `auto` or `html` for any reason (such as better performance), consider using another package.
+
+> If anybody is willing to help out the [Flutter Web](#flutter-web) issue or with testing it would be highly appreciated (either contact me through [my GitHub](https://github.com/omarhurani) or contribute and post a pull request).
+
+
+## Support Me
+
+If you like my work and would like to support me, feel free to do so :D
+
+<a href="https://www.buymeacoffee.com/omarhurani" target="_blank"><img src="https://i.imgur.com/OUmVzk7.png" alt="Buy Me A Pizza" height=60px/> </a>
