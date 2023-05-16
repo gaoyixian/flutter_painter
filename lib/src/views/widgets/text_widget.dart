@@ -195,8 +195,7 @@ class EditTextWidgetState extends State<EditTextWidget>
     textFieldNode.addListener(focusListener);
 
     // Requests focus for the focus node after the first frame is rendered
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      await Future.delayed(const Duration(milliseconds: 500));
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       textFieldNode.requestFocus();
     });
 
@@ -250,7 +249,6 @@ class EditTextWidgetState extends State<EditTextWidget>
                   .clamp(0, screenHeight)),
           child: Center(
             child: TextField(
-              readOnly: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
@@ -262,7 +260,7 @@ class EditTextWidgetState extends State<EditTextWidget>
               minLines: 1,
               maxLines: 10,
               controller: textEditingController,
-              // focusNode: textFieldNode,
+              focusNode: textFieldNode,
               style: settings.textStyle,
               textAlign: TextAlign.center,
               textAlignVertical: TextAlignVertical.center,
