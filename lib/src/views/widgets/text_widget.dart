@@ -204,6 +204,11 @@ class EditTextWidgetState extends State<EditTextWidget>
     //
     // This is used to check the bottom view insets (the keyboard size on mobile)
     WidgetsBinding.instance?.addObserver(this);
+
+    PainterController controller = PainterController.of(context);
+    controller.setEditingText = (text) {
+      textEditingController.text = text;
+    };
   }
 
   @override
