@@ -187,6 +187,9 @@ class EditTextWidgetState extends State<EditTextWidget>
   void initState() {
     super.initState();
 
+    /// 让外部拥有控制权
+    widget.controller.textEditingController = textEditingController;
+
     // Initialize the focus node
     textFieldNode = settings.focusNode ?? FocusNode();
     textFieldNode.addListener(focusListener);
@@ -198,22 +201,15 @@ class EditTextWidgetState extends State<EditTextWidget>
 
     // Initialize the text in the [TextField] to the drawable text
     textEditingController.text = widget.drawable.text;
-    textEditingController.addListener(_onEditingTextUpdate);
 
     // Add this object as an observer for widget bindings
     //
     // This is used to check the bottom view insets (the keyboard size on mobile)
     WidgetsBinding.instance?.addObserver(this);
-
-    PainterController controller = PainterController.of(context);
-    controller.setEditingText = (text) {
-      textEditingController.text = text;
-    };
   }
 
   @override
   void dispose() {
-    textEditingController.removeListener(_onEditingTextUpdate);
     // Remove this object from being an observer
     WidgetsBinding.instance?.removeObserver(this);
 
@@ -226,11 +222,6 @@ class EditTextWidgetState extends State<EditTextWidget>
     // Dispose of the text editing controller
     textEditingController.dispose();
     super.dispose();
-  }
-
-  void _onEditingTextUpdate() {
-    PainterController controller = PainterController.of(context);
-    controller.didChangeEditingText?.call(textEditingController.text);
   }
 
   @override
