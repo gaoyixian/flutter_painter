@@ -249,18 +249,19 @@ class EditTextWidgetState extends State<EditTextWidget>
                   .clamp(0, screenHeight)),
           child: Center(
             child: TextField(
+              readOnly: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
                 isDense: true,
               ),
-              cursorColor: Colors.transparent,
+              cursorColor: Colors.white,
               buildCounter: buildEmptyCounter,
               maxLength: 99,
               minLines: 1,
               maxLines: 10,
               controller: textEditingController,
-              focusNode: textFieldNode,
+              // focusNode: textFieldNode,
               style: settings.textStyle,
               textAlign: TextAlign.center,
               textAlignVertical: TextAlignVertical.center,
