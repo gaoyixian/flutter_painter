@@ -82,7 +82,6 @@ class _FlutterPainterExampleState extends State<FlutterPainterExample> {
                 fontSize: 18,
                 backgroundColor: Colors.amber,
               ),
-              backgroundDrawable: true,
             ),
             freeStyle: const FreeStyleSettings(
               color: red,

@@ -16,15 +16,12 @@ class TextDrawable extends ObjectDrawable {
   // A text painter which will paint the text on the canvas.
   final TextPainter textPainter;
 
-  final bool backgroundDrawable;
-
   /// Creates a [TextDrawable] to draw [text].
   ///
   /// The path will be drawn with the passed [style] if provided.
   TextDrawable({
     required this.text,
     required Offset position,
-    required this.backgroundDrawable,
     double rotation = 0,
     double scale = 1,
     this.style = const TextStyle(
@@ -57,7 +54,7 @@ class TextDrawable extends ObjectDrawable {
     textPainter.layout(maxWidth: size.width * scale);
     final textPosition =
         position - Offset(textPainter.width / 2, textPainter.height / 2);
-    if (backgroundDrawable) {
+    if (style.backgroundColor != null) {
       final textSize = getSize();
       const padding = Offset(16, 16);
       final backgroundSize = textSize + padding;
@@ -88,7 +85,6 @@ class TextDrawable extends ObjectDrawable {
   /// Creates a copy of this but with the given fields replaced with the new values.
   @override
   TextDrawable copyWith({
-    bool? backgroundDrawable,
     bool? hidden,
     Set<ObjectDrawableAssist>? assists,
     String? text,
@@ -102,7 +98,6 @@ class TextDrawable extends ObjectDrawable {
     return TextDrawable(
       text: text ?? this.text,
       position: position ?? this.position,
-      backgroundDrawable: backgroundDrawable ?? this.backgroundDrawable,
       rotation: rotation ?? rotationAngle,
       scale: scale ?? this.scale,
       style: style ?? this.style,

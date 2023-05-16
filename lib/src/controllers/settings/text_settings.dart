@@ -13,8 +13,6 @@ class TextSettings {
   /// However, you won't be able to listen to changes in user input focus.
   final FocusNode? focusNode;
 
-  final bool backgroundDrawable;
-
   /// Creates a [TextSettings] with the given [textStyle] and [focusNode].
   const TextSettings({
     this.textStyle = const TextStyle(
@@ -23,15 +21,14 @@ class TextSettings {
       backgroundColor: Colors.amber,
     ),
     this.focusNode,
-    this.backgroundDrawable = false,
   });
 
   /// Creates a copy of this but with the given fields replaced with the new values.
   TextSettings copyWith(
       {TextStyle? textStyle, FocusNode? focusNode, bool? backgroundDrawable}) {
     return TextSettings(
-        textStyle: textStyle ?? this.textStyle,
-        focusNode: focusNode ?? this.focusNode,
-        backgroundDrawable: backgroundDrawable ?? this.backgroundDrawable);
+      textStyle: textStyle ?? this.textStyle,
+      focusNode: focusNode ?? this.focusNode,
+    );
   }
 }
