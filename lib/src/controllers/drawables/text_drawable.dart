@@ -27,7 +27,6 @@ class TextDrawable extends ObjectDrawable {
     this.style = const TextStyle(
       fontSize: 14,
       color: Colors.black,
-      backgroundColor: Colors.amber,
     ),
     this.direction = TextDirection.ltr,
     bool locked = false,

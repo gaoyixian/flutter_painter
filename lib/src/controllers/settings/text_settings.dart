@@ -18,7 +18,6 @@ class TextSettings {
     this.textStyle = const TextStyle(
       fontSize: 14,
       color: Colors.black,
-      backgroundColor: Colors.amber,
     ),
     this.focusNode,
   });

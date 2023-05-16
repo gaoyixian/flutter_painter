@@ -241,9 +241,7 @@ class EditTextWidgetState extends State<EditTextWidget>
       child: Container(
         color: Colors.black38,
         child: Padding(
-          padding: EdgeInsets.only(
-              bottom: (keyboardHeight - (screenHeight - height - y))
-                  .clamp(0, screenHeight)),
+          padding: EdgeInsets.zero,
           child: Center(
             child: TextField(
               decoration: const InputDecoration(
