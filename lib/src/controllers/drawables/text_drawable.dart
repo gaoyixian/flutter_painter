@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'object_drawable.dart';
@@ -18,17 +16,21 @@ class TextDrawable extends ObjectDrawable {
   // A text painter which will paint the text on the canvas.
   final TextPainter textPainter;
 
+  final bool backgroundDrawable;
+
   /// Creates a [TextDrawable] to draw [text].
   ///
   /// The path will be drawn with the passed [style] if provided.
   TextDrawable({
     required this.text,
     required Offset position,
+    required this.backgroundDrawable,
     double rotation = 0,
     double scale = 1,
     this.style = const TextStyle(
       fontSize: 14,
       color: Colors.black,
+      backgroundColor: Colors.amber,
     ),
     this.direction = TextDirection.ltr,
     bool locked = false,
@@ -53,16 +55,40 @@ class TextDrawable extends ObjectDrawable {
   void drawObject(Canvas canvas, Size size) {
     // Render the text according to the size of the canvas taking the scale in mind
     textPainter.layout(maxWidth: size.width * scale);
-
+    final textPosition =
+        position - Offset(textPainter.width / 2, textPainter.height / 2);
+    if (backgroundDrawable) {
+      final textSize = getSize();
+      const padding = Offset(16, 16);
+      final backgroundSize = textSize + padding;
+      final backgroundPosition = (textPosition - (padding / 2)) +
+          Offset(backgroundSize.width / 2.0, backgroundSize.height / 2.0);
+      final backgroundRect = Rect.fromCenter(
+          center: backgroundPosition,
+          width: backgroundSize.width,
+          height: backgroundSize.height);
+      final backgroundPaint = Paint();
+      if (style.backgroundColor != null) {
+        backgroundPaint.color = style.backgroundColor!;
+      }
+      canvas.drawRRect(
+          RRect.fromLTRBR(
+              backgroundRect.left,
+              backgroundRect.top,
+              backgroundRect.right,
+              backgroundRect.bottom,
+              const Radius.circular(8)),
+          backgroundPaint);
+    }
     // Paint the text on the canvas
     // It is shifted back by half of its width and height to be drawn in the center
-    textPainter.paint(canvas,
-        position - Offset(textPainter.width / 2, textPainter.height / 2));
+    textPainter.paint(canvas, textPosition);
   }
 
   /// Creates a copy of this but with the given fields replaced with the new values.
   @override
   TextDrawable copyWith({
+    bool? backgroundDrawable,
     bool? hidden,
     Set<ObjectDrawableAssist>? assists,
     String? text,
@@ -76,6 +102,7 @@ class TextDrawable extends ObjectDrawable {
     return TextDrawable(
       text: text ?? this.text,
       position: position ?? this.position,
+      backgroundDrawable: backgroundDrawable ?? this.backgroundDrawable,
       rotation: rotation ?? rotationAngle,
       scale: scale ?? this.scale,
       style: style ?? this.style,

@@ -1,12 +1,8 @@
-import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_painter/flutter_painter.dart';
-
-import 'dart:ui' as ui;
-
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 void main() => runApp(const MyApp());
@@ -81,7 +77,12 @@ class _FlutterPainterExampleState extends State<FlutterPainterExample> {
             text: TextSettings(
               focusNode: textFocusNode,
               textStyle: const TextStyle(
-                  fontWeight: FontWeight.bold, color: red, fontSize: 18),
+                fontWeight: FontWeight.bold,
+                color: red,
+                fontSize: 18,
+                backgroundColor: Colors.amber,
+              ),
+              backgroundDrawable: true,
             ),
             freeStyle: const FreeStyleSettings(
               color: red,
@@ -105,8 +106,9 @@ class _FlutterPainterExampleState extends State<FlutterPainterExample> {
   /// to use it as a background
   void initBackground() async {
     // Extension getter (.image) to get [ui.Image] from [ImageProvider]
-    final image =
-        await const NetworkImage('https://img0.baidu.com/it/u=1188057296,787811847&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1684256400&t=cf54f7958175bcac390b33ebfb6832bd').image;
+    final image = await const NetworkImage(
+            'https://img0.baidu.com/it/u=1188057296,787811847&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1684256400&t=cf54f7958175bcac390b33ebfb6832bd')
+        .image;
 
     setState(() {
       backgroundImage = image;
