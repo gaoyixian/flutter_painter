@@ -267,10 +267,12 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
                                                     selectedDrawable);
                                               }
                                             },
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8),
-                                              child: Image.asset(
-                                                'images/ic_close.png',
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: Image(
+                                                image: AssetImage(
+                                                  'packages/flutter_painter/assets/ic_close.png',
+                                                ),
                                                 width: 20,
                                                 height: 20,
                                               ),
