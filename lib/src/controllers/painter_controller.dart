@@ -22,6 +22,8 @@ import 'settings/settings.dart';
 /// * IMPORTANT: *
 /// Each [FlutterPainter] should have its own controller.
 class PainterController extends ValueNotifier<PainterControllerValue> {
+  void Function(String text)? didChangeEditingText;
+
   /// A controller for an event stream which widgets will listen to.
   ///
   /// This will dispatch events that represent actions, such as adding a new text drawable.

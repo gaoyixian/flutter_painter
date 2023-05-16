@@ -198,6 +198,7 @@ class EditTextWidgetState extends State<EditTextWidget>
 
     // Initialize the text in the [TextField] to the drawable text
     textEditingController.text = widget.drawable.text;
+    textEditingController.addListener(_onEditingTextUpdate);
 
     // Add this object as an observer for widget bindings
     //
@@ -207,6 +208,7 @@ class EditTextWidgetState extends State<EditTextWidget>
 
   @override
   void dispose() {
+    textEditingController.removeListener(_onEditingTextUpdate);
     // Remove this object from being an observer
     WidgetsBinding.instance?.removeObserver(this);
 
@@ -219,6 +221,11 @@ class EditTextWidgetState extends State<EditTextWidget>
     // Dispose of the text editing controller
     textEditingController.dispose();
     super.dispose();
+  }
+
+  void _onEditingTextUpdate() {
+    PainterController controller = PainterController.of(context);
+    controller.didChangeEditingText?.call(textEditingController.text);
   }
 
   @override
@@ -246,7 +253,6 @@ class EditTextWidgetState extends State<EditTextWidget>
                   .clamp(0, screenHeight)),
           child: Center(
             child: TextField(
-              readOnly: true, /// 因为需求不需要设置这个。。。
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
