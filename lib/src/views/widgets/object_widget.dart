@@ -267,6 +267,9 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
                                                 controller!.removeDrawable(
                                                     selectedDrawable);
                                               }
+                                              DrawableDeletedNotification(
+                                                      drawable)
+                                                  .dispatch(context);
                                             },
                                             child: const Padding(
                                               padding: EdgeInsets.all(8),
@@ -604,7 +607,6 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
   ///
   /// Deselects the selected object drawable.
   void onBackgroundTapped() {
-    controller?.backgroundCallback?.call();
     SelectedObjectDrawableUpdatedNotification(null).dispatch(context);
 
     setState(() {

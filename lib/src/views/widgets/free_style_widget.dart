@@ -100,6 +100,7 @@ class _FreeStyleWidgetState extends State<_FreeStyleWidget> {
         .replaceDrawable(drawable, newDrawable, newAction: false);
     // Update the current drawable to be the new copy
     this.drawable = newDrawable;
+    FreeStyleUpdateNotification(drawable).dispatch(context);
   }
 
   /// Callback when the user removes all pointers from the widget.

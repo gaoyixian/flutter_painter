@@ -24,8 +24,6 @@ import 'settings/settings.dart';
 class PainterController extends ValueNotifier<PainterControllerValue> {
   TextEditingController? textEditingController;
 
-  VoidCallback? backgroundCallback;
-
   /// A controller for an event stream which widgets will listen to.
   ///
   /// This will dispatch events that represent actions, such as adding a new text drawable.
