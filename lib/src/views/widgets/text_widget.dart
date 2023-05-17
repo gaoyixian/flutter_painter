@@ -286,10 +286,10 @@ class EditTextWidgetState extends State<EditTextWidget>
 
     // If the previous value of bottom view insets is larger than the current value,
     // the keyboard is closing, so lose focus from the focus node
-    // if ((value ?? bottomViewInsets) < bottomViewInsets &&
-    //     textFieldNode.hasFocus) {
-    //   textFieldNode.unfocus();
-    // }
+    if ((value ?? bottomViewInsets) < bottomViewInsets &&
+        textFieldNode.hasFocus) {
+      textFieldNode.unfocus();
+    }
 
     // Update the bottom view insets for next check
     bottomViewInsets = value ?? 0;
