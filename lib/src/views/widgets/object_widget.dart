@@ -174,7 +174,8 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
           ...drawables.asMap().entries.map((entry) {
             final drawable = entry.value;
             final selected = drawable == controller?.selectedObjectDrawable;
-            final size = drawable.getSize(maxWidth: constraints.maxWidth);
+            final size =
+                drawable.getSize(maxWidth: constraints.maxWidth - 16 * 2);
             final widget = Padding(
               padding: EdgeInsets.all(objectPadding),
               child: SizedBox(
@@ -723,8 +724,9 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
       ..translate(details.localFocalPoint.dx, details.localFocalPoint.dy)
       ..rotateZ(-initialRotation);
     var position = initialPosition + Offset(rotateOffset[12], rotateOffset[13]);
-    final drawableSize = initialDrawable.getSize();
     final size = this.center + this.center;
+    final drawableSize =
+        initialDrawable.getSize(maxWidth: MediaQuery.of(context).size.width);
     position = Offset(
         min(size.dx - drawableSize.width / 2,
             max(position.dx, 0 + drawableSize.width / 2)),
@@ -968,7 +970,8 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
     final initial = initialScaleDrawables[index];
     if (initial == null) return;
     final length = details.localPosition.dx * (isReversed ? -1 : 1);
-    final initialSize = initial.getSize(maxWidth: constraints.maxWidth);
+    final initialSize =
+        initial.getSize(maxWidth: constraints.maxWidth - 16 * 2);
     final initialLength = initialSize.width / 2;
     final double scale = initialLength == 0
         ? (length * 2)

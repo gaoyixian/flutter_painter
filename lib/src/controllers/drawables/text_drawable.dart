@@ -50,11 +50,11 @@ class TextDrawable extends ObjectDrawable {
   @override
   void drawObject(Canvas canvas, Size size) {
     // Render the text according to the size of the canvas taking the scale in mind
-    textPainter.layout(maxWidth: size.width * scale);
+    double maxWidth = size.width - 16 * 2;
+    final textSize = getSize(maxWidth: maxWidth * scale);
     final textPosition =
         position - Offset(textPainter.width / 2, textPainter.height / 2);
     if (style.backgroundColor != null) {
-      final textSize = getSize();
       const padding = Offset(16, 16);
       final backgroundSize = textSize + padding;
       final backgroundPosition = (textPosition - (padding / 2)) +
