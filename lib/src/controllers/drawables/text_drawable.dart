@@ -33,11 +33,11 @@ class TextDrawable extends ObjectDrawable {
     bool hidden = false,
     Set<ObjectDrawableAssist> assists = const <ObjectDrawableAssist>{},
   })  : textPainter = TextPainter(
-          text: TextSpan(text: text, style: style),
-          textAlign: TextAlign.center,
-          textScaleFactor: scale,
-          textDirection: direction,
-        ),
+            text: TextSpan(text: text, style: style),
+            textAlign: TextAlign.center,
+            textScaleFactor: scale,
+            textDirection: direction,
+            maxLines: 1000),
         super(
             position: position,
             rotationAngle: rotation,
