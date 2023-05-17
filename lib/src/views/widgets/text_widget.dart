@@ -221,6 +221,7 @@ class EditTextWidgetState extends State<EditTextWidget>
 
     // Dispose of the text editing controller
     textEditingController.dispose();
+    widget.controller.textEditingController = null;
     super.dispose();
   }
 
