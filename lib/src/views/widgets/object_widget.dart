@@ -729,7 +729,7 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
     var position = initialPosition + Offset(rotateOffset[12], rotateOffset[13]);
     final size = this.center + this.center;
     final drawableSize =
-        initialDrawable.getSize(maxWidth: MediaQuery.of(context).size.width);
+        initialDrawable.getSize(maxWidth: size.dx);
     position = Offset(
         min(size.dx - drawableSize.width / 2,
             max(position.dx, 0 + drawableSize.width / 2)),
