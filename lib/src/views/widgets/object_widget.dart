@@ -728,13 +728,24 @@ class _ObjectWidgetState extends State<_ObjectWidget> {
       ..rotateZ(-initialRotation);
     var position = initialPosition + Offset(rotateOffset[12], rotateOffset[13]);
     final size = this.center + this.center;
-    final drawableSize =
-        initialDrawable.getSize(maxWidth: size.dx);
-    position = Offset(
-        min(size.dx - drawableSize.width / 2,
-            max(position.dx, 0 + drawableSize.width / 2)),
-        min(size.dy - drawableSize.height / 2,
-            max(position.dy, 0 + drawableSize.height / 2)));
+    final drawableSize = initialDrawable.getSize(maxWidth: size.dx);
+    var positionX = position.dx;
+    var positionY = position.dy;
+    final drawableCenterX = drawableSize.width / 2;
+    final drawableCenterY = drawableSize.height / 2;
+    if (drawableSize.width < size.dx) {
+      positionX =
+          min(size.dx - drawableCenterX, max(positionX, drawableCenterX));
+    } else {
+      positionX = this.center.dx;
+    }
+    if (drawableSize.height < size.dy) {
+      positionY =
+          min(size.dy - drawableCenterY, max(positionY, drawableCenterY));
+    } else {
+      positionY = this.center.dy;
+    }
+    position = Offset(positionX, positionY);
 
     // Calculate scale of object reference to the initial object scale
     final scale = initialDrawable.scale * details.scale;
