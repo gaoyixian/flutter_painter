@@ -172,9 +172,9 @@ class _FlutterPainterWidget extends StatelessWidget {
                   panEnabled: controller.settings.scale.enabled &&
                       (controller.freeStyleSettings.mode == FreeStyleMode.none),
                   scaleEnabled: controller.settings.scale.enabled,
-                  child: _FreeStyleWidget(
+                  child: _TextWidget(
                       // controller: controller,
-                      child: _TextWidget(
+                      child: _FreeStyleWidget(
                     // controller: controller,
                     child: _ShapeWidget(
                       // controller: controller,
