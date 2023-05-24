@@ -233,11 +233,13 @@ class EditTextWidgetState extends State<EditTextWidget>
     // doesn't block it
     final mediaQuery = MediaQuery.of(context);
     final screenHeight = mediaQuery.size.height;
+    final screenWidth = mediaQuery.size.width;
     final keyboardHeight = mediaQuery.viewInsets.bottom;
     final renderBox = widget.controller.painterKey.currentContext
         ?.findRenderObject() as RenderBox?;
     final y = renderBox?.localToGlobal(Offset.zero).dy ?? 0;
     final height = renderBox?.size.height ?? screenHeight;
+    final width = renderBox?.size.width ?? screenWidth;
 
     return GestureDetector(
       // If the border is tapped, un-focus the text field
@@ -251,25 +253,45 @@ class EditTextWidgetState extends State<EditTextWidget>
               bottom: (keyboardHeight - (screenHeight - height - y))
                   .clamp(0, screenHeight)),
           child: Center(
-            child: TextField(
-              readOnly: true,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-                isDense: true,
-              ),
-              cursorColor: Colors.white,
-              buildCounter: buildEmptyCounter,
-              maxLength: 99,
-              minLines: 1,
-              maxLines: 10,
-              controller: textEditingController,
-              // focusNode: textFieldNode,
-              style: settings.textStyle,
-              textAlign: TextAlign.center,
-              textAlignVertical: TextAlignVertical.center,
-              onEditingComplete: onEditingComplete,
-            ),
+            child: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: textEditingController,
+                builder: (context, value, child) {
+                  TextPainter textPainter = TextPainter(
+                      text: TextSpan(
+                        text: value.text,
+                        style: settings.textStyle,
+                      ),
+                      textDirection: TextDirection.ltr);
+                  textPainter.layout(maxWidth: width);
+                  return Container(
+                    width: textPainter.size.width + 16,
+                    height: textPainter.size.height + 16,
+                    alignment: AlignmentDirectional.center,
+                    decoration: BoxDecoration(
+                        color: settings.textStyle.backgroundColor,
+                        borderRadius: BorderRadiusDirectional.circular(8)),
+                    child: TextField(
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                        isDense: true,
+                      ),
+                      cursorColor: Colors.white,
+                      buildCounter: buildEmptyCounter,
+                      maxLength: 99,
+                      minLines: 1,
+                      maxLines: 10,
+                      controller: textEditingController,
+                      // focusNode: textFieldNode,
+                      style: settings.textStyle.merge(
+                          const TextStyle(backgroundColor: Colors.transparent)),
+                      textAlign: TextAlign.center,
+                      textAlignVertical: TextAlignVertical.center,
+                      onEditingComplete: onEditingComplete,
+                    ),
+                  );
+                }),
           ),
         ),
       ),
